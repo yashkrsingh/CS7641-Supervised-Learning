@@ -54,7 +54,6 @@ def plot_learning_curve(data_name, estimator, train_x, train_y, score_metric):
     score_times_std = np.std(score_times, axis=1)
 
     _, axes = plt.subplots(1, 2, figsize=(20, 5))
-    # axes[0].set_ylim(.4, 1.01)
     axes[0].set_xlabel("Training examples")
     axes[0].set_ylabel("F1 Score")
     axes[0].grid()
@@ -119,7 +118,6 @@ def plot_validation_curve(data_name, estimator, parameters, train_x, train_y, sc
             ax.set_xticklabels(labels=param_labels)
         ax.set_xlabel(param_name)
         ax.set_ylabel("Score")
-        # ax.set_ylim(0.0, 1.1)
         lw = 2
 
         ax.plot(param_range, train_scores_mean, label="Training score", color="red", lw=lw)
