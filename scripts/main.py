@@ -16,10 +16,10 @@ ada_parameters = {'learning_rate': np.linspace(0.01, 0.1, 10),
 knn_parameters = {'n_neighbors': [3, 5, 7, 9, 11, 13, 15],
                   'metric': ['minkowski', 'euclidean', 'manhattan']}
 
-lin_svm_parameters = {'C': np.logspace(-2, 8, 10)}
+lin_svm_parameters = {'C': np.linspace(0.01, 50, 10)}
 
-rbf_svm_parameters = {'C': np.linspace(.1, 50, 10),
-                      'gamma': np.logspace(-3, 3, 6)}
+rbf_svm_parameters = {'C': np.linspace(0.01, 50, 10),
+                      'gamma': [0.001, 0.01, 0.1, 1, 10]}
 
 mlp_parameters = {'hidden_layer_sizes': np.arange(50, 300, 25),
                   'activation': ['identity', 'logistic', 'tanh', 'relu']}
@@ -39,8 +39,7 @@ if __name__ == '__main__':
     # Decision Tree Classifier
     fetus_train_result = vanilla_fit(DecisionTreeClassifier(), fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
     validation_curve('fetus', DecisionTreeClassifier(), dt_parameters, fetus_train_x, fetus_train_y)
-    fetus_test_result = do_grid_search('fetus', DecisionTreeClassifier(), dt_parameters, fetus_train_x, fetus_train_y,
-                                       fetus_test_x, fetus_test_y)
+    fetus_test_result = do_grid_search('fetus', DecisionTreeClassifier(), dt_parameters, fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
     # {'max_depth': 9, 'min_samples_leaf': 2}
 
     wine_train_result = vanilla_fit(DecisionTreeClassifier(), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
@@ -93,25 +92,28 @@ if __name__ == '__main__':
     fetus_train_result_lin = vanilla_fit(SVC(kernel='linear'), fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
     validation_curve('fetus-lin', SVC(kernel='linear'), lin_svm_parameters, fetus_train_x, fetus_train_y)
     fetus_test_result_lin = do_grid_search('fetus-lin', SVC(kernel='linear'), lin_svm_parameters, fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
+    # {'C': 5.564444444444445}
 
     fetus_train_result_rbf = vanilla_fit(SVC(kernel='rbf'), fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
     validation_curve('fetus-rbf', SVC(kernel='rbf'), rbf_svm_parameters, fetus_train_x, fetus_train_y)
     fetus_test_result_rbf = do_grid_search('fetus-rbf', SVC(kernel='rbf'), rbf_svm_parameters, fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
+    # {'C': 16.673333333333336, 'gamma': 0.1}
 
-    wine_train_result_lin = vanilla_fit(SVC(kernel='linear'), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
-    validation_curve('wine-lin', SVC(kernel='linear'), lin_svm_parameters, wine_train_x, wine_train_y)
-    wine_test_result_lin = do_grid_search('wine-lin', SVC(kernel='linear'), lin_svm_parameters, wine_train_x, wine_train_y, wine_test_x, wine_test_y)
+    # wine_train_result_lin = vanilla_fit(SVC(), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
+    # validation_curve('wine-lin', SVC(kernel='linear'), lin_svm_parameters, wine_train_x, wine_train_y)
+    # wine_test_result_lin = do_grid_search('wine-lin', SVC(kernel='linear'), lin_svm_parameters, wine_train_x, wine_train_y, wine_test_x, wine_test_y)
 
     wine_train_result_rbf = vanilla_fit(SVC(kernel='rbf'), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
     validation_curve('wine-rbf', SVC(kernel='rbf'), rbf_svm_parameters, wine_train_x, wine_train_y)
     wine_test_result_rbf = do_grid_search('wine-rbf', SVC(kernel='rbf'), rbf_svm_parameters, wine_train_x, wine_train_y, wine_test_x, wine_test_y)
+    # {'C': 5.564444444444445, 'gamma': 1}
 
     results.loc[results.shape[0]] = classification_scores('lin-svm-fetus-untuned', fetus_train_result_lin)
     results.loc[results.shape[0]] = classification_scores('lin-svm-fetus-optimal', fetus_test_result_lin)
     results.loc[results.shape[0]] = classification_scores('rbf-svm-fetus-untuned', fetus_train_result_rbf)
     results.loc[results.shape[0]] = classification_scores('rbf-svm-fetus-optimal', fetus_test_result_rbf)
-    results.loc[results.shape[0]] = classification_scores('lin-svm-wine-untuned', wine_train_result_lin)
-    results.loc[results.shape[0]] = classification_scores('lin-svm-wine-optimal', wine_test_result_lin)
+    # results.loc[results.shape[0]] = classification_scores('lin-svm-wine-untuned', wine_train_result_lin)
+    # results.loc[results.shape[0]] = classification_scores('lin-svm-wine-optimal', wine_test_result_lin)
     results.loc[results.shape[0]] = classification_scores('rbf-svm-wine-untuned', wine_train_result_rbf)
     results.loc[results.shape[0]] = classification_scores('rbf-svm-wine-optimal', wine_test_result_rbf)
 
