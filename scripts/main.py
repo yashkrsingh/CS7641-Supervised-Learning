@@ -21,7 +21,7 @@ svm_parameters = {'C': np.linspace(.1, 50, 10),
 
 mlp_parameters = {'hidden_layer_sizes': np.arange(50, 300, 25),
                   'activation': ['identity', 'logistic', 'tanh', 'relu']}
-#                   'solver': ['sgd', 'lbfgs', 'adam']
+#                 ,'solver': ['sgd', 'lbfgs', 'adam']}
 
 if __name__ == '__main__':
     fetus = load_fetus_data()
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     fetus_train_result = vanilla_fit(DecisionTreeClassifier(), fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
     validation_curve('fetus', DecisionTreeClassifier(), dt_parameters, fetus_train_x, fetus_train_y)
     fetus_test_result = do_grid_search('fetus', DecisionTreeClassifier(), dt_parameters, fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
-    # {'max_depth': 9, 'min_samples_leaf': 1}
+    # {'max_depth': 9, 'min_samples_leaf': 2}
 
     wine_train_result = vanilla_fit(DecisionTreeClassifier(), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
     validation_curve('wine', DecisionTreeClassifier(), dt_parameters, wine_train_x, wine_train_y)
@@ -55,13 +55,13 @@ if __name__ == '__main__':
     validation_curve('fetus', AdaBoostClassifier(DecisionTreeClassifier(max_depth=1)), ada_parameters, fetus_train_x, fetus_train_y)
     fetus_test_result = do_grid_search('fetus', AdaBoostClassifier(DecisionTreeClassifier(max_depth=1)), ada_parameters, fetus_train_x, fetus_train_y, fetus_test_x, fetus_test_y)
     # {'learning_rate': 0.6, 'n_estimators': 400}
-    # {'learning_rate': 0.09000000000000001, 'n_estimators': 460}
+    # {'learning_rate': 0.09000000000000001, 'n_estimators': 410}
 
     wine_train_result = vanilla_fit(AdaBoostClassifier(DecisionTreeClassifier()), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
     validation_curve('wine', AdaBoostClassifier(DecisionTreeClassifier(max_depth=2, criterion='entropy')), ada_parameters, wine_train_x, wine_train_y)
     wine_test_result = do_grid_search('wine', AdaBoostClassifier(DecisionTreeClassifier(max_depth=2, criterion='entropy')), ada_parameters, wine_train_x, wine_train_y, wine_test_x, wine_test_y)
     # {'learning_rate': 0.9, 'n_estimators': 450}
-    # {'learning_rate': 0.09000000000000001, 'n_estimators': 460}
+    # {'learning_rate': 0.1, 'n_estimators': 460}
 
     results.loc[results.shape[0]] = classification_scores('ada-fetus-untuned', fetus_train_result)
     results.loc[results.shape[0]] = classification_scores('ada-fetus-optimal', fetus_test_result)
@@ -107,13 +107,13 @@ if __name__ == '__main__':
     validation_curve('fetus', MLPClassifier(learning_rate_init=.001, max_iter=10000), mlp_parameters, fetus_train_x, fetus_train_y)
     fetus_test_result = do_grid_search('fetus', MLPClassifier(learning_rate_init=.001, max_iter=10000), mlp_parameters, fetus_train_x, fetus_train_y, fetus_test_x,fetus_test_y)
     # {'hidden_layer_sizes': 275, 'solver': 'adam'}
-    # {'activation': 'relu', 'hidden_layer_sizes': 125}
+    # {'activation': 'relu', 'hidden_layer_sizes': 250}
 
-    wine_train_result = vanilla_fit(MLPClassifier(learning_rate_init=.01, max_iter=10000), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
-    validation_curve('wine', MLPClassifier(learning_rate_init=.01, max_iter=10000), mlp_parameters, wine_train_x, wine_train_y)
-    wine_test_result = do_grid_search('wine', MLPClassifier(learning_rate_init=.01, max_iter=10000), mlp_parameters, wine_train_x, wine_train_y, wine_test_x,wine_test_y)
+    wine_train_result = vanilla_fit(MLPClassifier(learning_rate_init=.001, max_iter=1000), wine_train_x, wine_train_y, wine_test_x, wine_test_y)
+    validation_curve('wine', MLPClassifier(learning_rate_init=.001, learning_rate='adaptive', max_iter=1000), mlp_parameters, wine_train_x, wine_train_y)
+    wine_test_result = do_grid_search('wine', MLPClassifier(learning_rate_init=.001, learning_rate='adaptive', max_iter=1000), mlp_parameters, wine_train_x, wine_train_y, wine_test_x,wine_test_y)
     # {'hidden_layer_sizes': 200, 'solver': 'lbfgs'}
-    # {'activation': 'logistic', 'hidden_layer_sizes': 100}
+    # {'activation': 'relu', 'hidden_layer_sizes': 250}
 
     results.loc[results.shape[0]] = classification_scores('nn-fetus-untuned', fetus_train_result)
     results.loc[results.shape[0]] = classification_scores('nn-fetus-optimal', fetus_test_result)
