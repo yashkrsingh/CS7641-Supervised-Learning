@@ -13,7 +13,7 @@ def load_cancer_data():
     cancer.drop(columns=['Sample code number'], inplace=True)
     cancer['Class'] = np.where(cancer['Class'] == 4, 1, 0)
     cancer = cancer[cancer['Bare Nuclei'] != '?']
-    print(cancer['Class'].value_counts())
+    # print(cancer['Class'].value_counts())
     return cancer
 
 
@@ -22,8 +22,17 @@ def load_wine_data():
     bins = (0, 6, 10)
     labels = [0, 1]
     wine['quality'] = pd.cut(wine['quality'], bins=bins, labels=labels)
-    print(wine['quality'].value_counts())
+    # print(wine['quality'].value_counts())
     return wine
+
+
+def load_fetus_data():
+    fetus = pd.read_csv('../data/fetal-health.csv', sep=',', header=0)
+    col_to_drop = ['histogram_width', 'histogram_min', 'histogram_max', 'histogram_number_of_peaks', 'histogram_number_of_zeroes', 'histogram_mode', 'histogram_mean', 'histogram_median', 'histogram_variance', 'histogram_tendency']
+    fetus = fetus.drop(col_to_drop, axis=1)
+    fetus["fetal_health"].replace({1: 0, 2: 1, 3: 1}, inplace=True)
+    # print(fetus['fetal_health'].value_counts())
+    return fetus
 
 
 def split_data_set(dataframe, seed):
