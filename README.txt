@@ -12,8 +12,8 @@ Project Structure
 1. data
     - winequality-white.csv: Dataset taken from UCI ML Repository, containing 11 attributes of different white wines and their quality label as judges by experts on the scale of 1-10
     - winequality.names: Feature headers for winequality dataset
-    - breast-cancer-wisconsin.csv: Dataset taken from UCI ML Repository containing 10+ attributes of breast cancer cases with their subsequent class labels.
-    - breast-cancer-wisconsin.names: Feature headers for breast cancer dataset
+    - fetal-health.csv: Dataset taken from Kaggle with 10+ attributes of fetus health during pregnancy with their subsequent class labels.
+    - fetal-health.names: Feature headers for breast cancer dataset
 
 2. scripts
     - processing.py: Contains functions for data preprocessing and result consolidation, including validation and learning curve creation.
